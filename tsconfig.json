@@ -19,11 +19,7 @@
       }
     ],
     "paths": {
-<<<<<<< HEAD
       "@/*": ["./src/*"]
-=======
-      "@/*": ["./*"]
->>>>>>> 018c70b (initial commit)
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
