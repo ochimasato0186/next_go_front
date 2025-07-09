@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-  "name": "test",
-=======
   "name": "next_go_f",
->>>>>>> 018c70b (initial commit)
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,11 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@react-three/drei": "^10.0.8",
     "@react-three/fiber": "^9.1.2",
     "framer-motion": "^12.13.0",
-    "next": "15.3.2",
+    "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "three": "^0.176.0"
@@ -29,18 +24,5 @@
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
     "typescript": "^5"
-=======
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.4"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
->>>>>>> 018c70b (initial commit)
   }
 }
