@@ -1,10 +1,7 @@
 import React from "react";
 
 /**
- * スマホデモ機風のフレームコンポーネント。
- * 画面中央に配置し、背景を暗くしてデモ機感を演出。
- *
- * レスポンシブ対応: 画面幅に応じて最大375px・高さ812pxで縮小表示。
+ * 実寸大スマホフレーム（iPhone 12/13/14/15 Pro基準: 390x844px）
  */
 const SmartphoneFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div style={{
@@ -19,11 +16,8 @@ const SmartphoneFrame: React.FC<{ children: React.ReactNode }> = ({ children }) 
     zIndex: 1000
   }}>
     <div style={{
-      width: "min(100vw, 375px)",
-      height: "min(90vh, 812px)",
-      maxWidth: 375,
-      maxHeight: 812,
-      aspectRatio: "375/812",
+      width: 390,
+      height: 844,
       border: "16px solid #222",
       borderRadius: 40,
       boxShadow: "0 0 32px 8px #0008, 0 8px 32px #0006",
@@ -33,14 +27,11 @@ const SmartphoneFrame: React.FC<{ children: React.ReactNode }> = ({ children }) 
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      justifyContent: "flex-start",
-      transition: "width 0.2s, height 0.2s"
+      justifyContent: "flex-start"
     }}>
       {/* Notch */}
       <div style={{
-        width: "32%",
-        minWidth: 60,
-        maxWidth: 120,
+        width: 120,
         height: 30,
         background: "#222",
         borderRadius: "0 0 20px 20px",
