@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import styles from "../styles/DesktopFrame.module.css";
@@ -8,7 +8,14 @@ import stylesBtn from "../styles/button.module.css";
 const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userModalOpen, setUserModalOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState<{ name: string; email: string; school: string } | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    fetch("/userInfo.json")
+      .then((res) => res.json())
+      .then((data) => setUserInfo(data));
+  }, []);
 
   return (
     <div className={styles.desktopBg}>
@@ -25,40 +32,50 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             <span className={styles.hamburgerBar}></span>
           </button>
           <span style={{ margin: "0 auto" }}>No Look for School</span>
-          <span style={{ position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)", cursor: "pointer" }} onClick={() => setUserModalOpen(true)}>
+          <button
+            style={{ position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            aria-label="ユーザー情報"
+            onClick={() => setUserModalOpen(true)}
+          >
             <FaRegCircleUser size={56} />
-          </span>
+          </button>
         </div>
-      {/* ユーザー情報モーダル */}
-      {userModalOpen && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "rgba(0,0,0,0.3)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 1000
-        }} onClick={() => setUserModalOpen(false)}>
+        {/* ユーザー情報モーダル */}
+        {userModalOpen && (
           <div style={{
-            background: "#fff",
-            borderRadius: 12,
-            padding: "32px 40px",
-            minWidth: 320,
-            boxShadow: "0 2px 16px rgba(0,0,0,0.15)",
-            position: "relative"
-          }} onClick={e => e.stopPropagation()}>
-            <h2 style={{marginBottom: 24, fontSize: 20, textAlign: "center"}}>ユーザー情報</h2>
-            <div style={{marginBottom: 12}}>メールアドレス：sample@example.com</div>
-            <div style={{marginBottom: 12}}>ユーザー名：サンプルユーザー</div>
-            <div style={{marginBottom: 12}}>学校,所属名：サンプル学校</div>
-            <button style={{marginTop: 16, padding: "8px 24px", background: "#3182ce", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer", display: "block", marginLeft: "auto", marginRight: "auto"}} onClick={() => setUserModalOpen(false)}>閉じる</button>
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.3)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000
+          }} onClick={() => setUserModalOpen(false)}>
+            <div style={{
+              background: "#fff",
+              borderRadius: 12,
+              padding: "32px 40px",
+              minWidth: 320,
+              boxShadow: "0 2px 16px rgba(0,0,0,0.15)",
+              position: "relative"
+            }} onClick={e => e.stopPropagation()}>
+              <h2 style={{marginBottom: 24, fontSize: 20, textAlign: "center"}}>ユーザー情報</h2>
+              {userInfo ? (
+                <>
+                  <div style={{marginBottom: 12}}>メールアドレス：{userInfo.email}</div>
+                  <div style={{marginBottom: 12}}>ユーザー名：{userInfo.name}</div>
+                  <div style={{marginBottom: 12}}>学校,所属名：{userInfo.school}</div>
+                </>
+              ) : (
+                <div>読み込み中...</div>
+              )}
+              <button style={{marginTop: 16, padding: "8px 24px", background: "#3182ce", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer", display: "block", marginLeft: "auto", marginRight: "auto"}} onClick={() => setUserModalOpen(false)}>閉じる</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
         {/* サイドバー＋メインを横並びに */}
         <div className={styles.frameContent}>
           {sidebarOpen && (
@@ -93,6 +110,16 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                   }}
                 >
                   統計
+                </button>
+                {/* サイドバー：ユーザー情報ボタン */}
+                <button
+                  className={`px-4 py-2 rounded w-full mb-4 ${stylesBtn.sidebarBtn}`}
+                  onClick={() => {
+                    router.push("/maker/user");
+                    setSidebarOpen(false);
+                  }}
+                >
+                  ユーザー情報
                 </button>
                 {/* サイドバー：ログアウトボタン */}
                 <button
