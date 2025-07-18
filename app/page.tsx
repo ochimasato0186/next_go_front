@@ -1,5 +1,6 @@
 import Image from "next/image";
 import SmartphoneFrame from "../components/SmartphoneFrame";
+import stylesBtn from "../styles/button.module.css";
 import Link from "next/link";
 
 export default function Home() {
@@ -9,18 +10,21 @@ export default function Home() {
         <main className="flex flex-col items-center gap-4">
           <h1>ログイン画面</h1>
           <p>ここに先生向けの機能やUIを追加できます。</p>
+          {/* ログイン画面：生徒側ボタン */}
           <Link href="/student">
-            <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            <button className={`px-4 py-2 rounded hover:bg-blue-600 ${stylesBtn.loginStudentBtn}`}>
               生徒側
             </button>
           </Link>
+          {/* ログイン画面：先生側ボタン */}
           <Link href="/teacher">
-            <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+            <button className={`px-4 py-2 rounded hover:bg-green-600 ${stylesBtn.loginTeacherBtn}`}>
               先生側
             </button>
           </Link>
+          {/* ログイン画面：管理者ボタン */}
           <Link href="/maker">
-            <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+            <button className={`px-4 py-2 rounded hover:bg-yellow-600 ${stylesBtn.loginMakerBtn}`}>
               管理者
             </button>
           </Link>

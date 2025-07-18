@@ -1,0 +1,23 @@
+/* ボタンの色・スタイルを一元管理するCSSモジュール */
+
+/* ログイン画面の各ボタン */
+.loginStudentBtn {
+  background-color: #3b82f6; /* 青 */
+  color: #fff;
+}
+.loginTeacherBtn {
+  background-color: #22c55e; /* 緑 */
+  color: #fff;
+}
+.loginMakerBtn {
+  background-color: #eab308; /* 黄 */
+  color: #fff;
+}
+
+/* サイドバーのボタン（DesktopFrame） */
+.sidebarBtn {
+  background-color: #3b82f6; /* 青 */
+  color: #fff;
+}
+
+/* 必要に応じて他のボタンも追加してください */
