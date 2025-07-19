@@ -1,14 +1,13 @@
 import Image from "next/image";
 import SmartphoneFrame from "../../components/SmartphoneFrame";
 import Link from "next/link";
+import SmartphoneHeader from "../../components/SmartphoneHeader";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <SmartphoneFrame>
-        <header className="p-2 bg-gray-100 text-center font-bold">
-          生徒メイン画面ヘッダー
-        </header>
+        <SmartphoneHeader />
         <main className="flex-1 p-4 flex flex-col items-center gap-4">
           <h1>先生用メイン画面</h1>
           <p>ここに先生向けの機能やUIを追加できます。</p>

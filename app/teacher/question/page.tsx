@@ -1,12 +1,11 @@
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
+import SmartphoneHeader from "../../../components/SmartphoneHeader";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <SmartphoneFrame>
-        <header className="p-2 bg-gray-100 text-center font-bold">
-          先生メイン画面ヘッダー
-        </header>
+        <SmartphoneHeader />
         <main className="flex-1 p-4">
           <h1>先生用お問い合わせ画面</h1>
           <p>ここに先生向けの機能やUIを追加できます。</p>
