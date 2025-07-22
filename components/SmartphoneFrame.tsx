@@ -41,15 +41,19 @@ const SmartphoneFrame: React.FC<{ children: React.ReactNode }> = ({ children }) 
         transform: "translateX(-50%)"
       }} />
       {/* 画面エリア */}
-      <div style={{
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        zIndex: 1,
-        paddingTop: 30,
-        overflow: "auto",
-        background: "#fff"
-      }}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          zIndex: 1,
+          paddingTop: 30,
+          overflow: "hidden",
+          background: "#fff",
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
         {children}
       </div>
     </div>
