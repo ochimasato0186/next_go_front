@@ -1,13 +1,16 @@
 "use client";
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
 import SmartphoneHeader from "../../../components/SmartphoneHeader";
+import StudentBell from "../../../components/StudentBell";
 import StudentFooter from "../../../components/StudentFooter";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <SmartphoneFrame>
-        <SmartphoneHeader />
+  <SmartphoneHeader />
+  <div style={{ position: 'absolute', top: '25mm', right: '3mm', zIndex: 50 }}><StudentBell count={3} /></div>
+  <div className="flex justify-end pr-4"><StudentBell count={3} /></div>
         <main className="flex flex-col justify-center items-center min-h-screen p-0">
           <h1>生徒側ホーム画面</h1>
           <div className="flex justify-center items-center my-8" style={{ height: "540px" }}>

@@ -6,13 +6,16 @@ import Image from "next/image";
 import SmartphoneFrame from "../../components/SmartphoneFrame";
 import Link from "next/link";
 import SmartphoneHeader from "../../components/SmartphoneHeader";
+import StudentBell from "../../components/StudentBell";
 import StudentFooter from "../../components/StudentFooter";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <SmartphoneFrame>
-        <SmartphoneHeader />
+  <SmartphoneHeader />
+  <div style={{ position: 'absolute', top: '25mm', right: '3mm', zIndex: 50 }}><StudentBell count={3} /></div>
+  <div className="flex justify-end pr-4"><StudentBell count={3} /></div>
         <div style={{flex: 1, display: "flex", flexDirection: "column", height: "100%", position: "relative"}}>
           <main
             className="flex flex-col items-center gap-4"
