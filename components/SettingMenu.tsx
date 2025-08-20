@@ -37,7 +37,7 @@ const SettingMenu: React.FC = () => {
         </a>
       )
     },
-    { label: "タイトルへ戻る", onClick: () => alert("タイトルへ戻る") },
+    { label: "タイトルへ戻る", onClick: () => router.push("/") },
     { label: "ログアウト", onClick: () => alert("ログアウト") },
   ];
 

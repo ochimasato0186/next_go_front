@@ -49,17 +49,30 @@ const Calendar: React.FC = () => {
   return (
     <div
       style={{
-        maxWidth: 380,
+        maxWidth: 320,
         margin: "0 auto",
         fontFamily: "sans-serif",
-        fontSize: 20,
+        fontSize: 18,
         padding: 0,
+        height: 320, // 小さめに調整
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start"
       }}
     >
       {/* 学校名と学年クラス表示（仮のテキスト） */}
-      <div style={{ textAlign: "center", marginBottom: 8 }}>
-        <div style={{ fontSize: 18, fontWeight: "bold" }}>サンプル小学校</div>
-        <div style={{ fontSize: 16 }}>6年2組</div>
+      <div style={{
+        textAlign: "center",
+        marginBottom: 6,
+        border: "1px solid #bbb",
+        borderRadius: 7,
+        padding: "4px 0 2px 0",
+        background: "#fafafa",
+        width: "75%",
+        margin: "-0.5cm auto 6px auto"
+      }}>
+        <div style={{ fontSize: 15, fontWeight: "bold" }}>サンプル小学校</div>
+        <div style={{ fontSize: 13 }}>6年2組</div>
       </div>
       <div
         style={{
@@ -73,7 +86,7 @@ const Calendar: React.FC = () => {
         <span style={{ fontWeight: "bold", fontSize: 22 }}>{year}年 {month + 1}月</span>
         <button style={{ fontSize: 22, padding: "3px 12px" }} onClick={nextMonth}>{">"}</button>
       </div>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed", height: 200 }}>
         <thead>
           <tr>
             {weekDays.map((d) => (
