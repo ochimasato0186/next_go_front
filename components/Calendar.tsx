@@ -27,7 +27,17 @@ const Calendar: React.FC = () => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
+  const [schoolInfo, setSchoolInfo] = useState<{ school: string; grade: string; className: string } | null>(null);
   const matrix = getMonthMatrix(year, month);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const info = localStorage.getItem("schoolInfo");
+      if (info) {
+        setSchoolInfo(JSON.parse(info));
+      }
+    }
+  }, []);
 
   const prevMonth = () => {
     if (month === 0) {
@@ -60,7 +70,7 @@ const Calendar: React.FC = () => {
         justifyContent: "flex-start"
       }}
     >
-      {/* 学校名と学年クラス表示（仮のテキスト） */}
+      {/* 学校名と学年クラス表示 */}
       <div style={{
         textAlign: "center",
         marginBottom: 6,
@@ -71,8 +81,8 @@ const Calendar: React.FC = () => {
         width: "75%",
         margin: "-0.5cm auto 6px auto"
       }}>
-        <div style={{ fontSize: 15, fontWeight: "bold" }}>サンプル小学校</div>
-        <div style={{ fontSize: 13 }}>6年2組</div>
+        <div style={{ fontSize: 15, fontWeight: "bold" }}>{schoolInfo?.school || "学校名"}</div>
+        <div style={{ fontSize: 13 }}>{schoolInfo ? `${schoolInfo.grade}年${schoolInfo.className}組` : "学年組"}</div>
       </div>
       <div
         style={{

@@ -15,6 +15,12 @@ export default function Home() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!role) return alert("生徒用か教師用を選択してください");
+    // 入力値をlocalStorageに保存
+    localStorage.setItem("schoolInfo", JSON.stringify({
+      school,
+      grade,
+      className
+    }));
     // ここで登録処理を実装（API連携など）
     if (role === "teacher") {
       router.push("/teacher");
