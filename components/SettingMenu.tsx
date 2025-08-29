@@ -1,14 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useState } from "react";
 
 const SettingMenu: React.FC = () => {
   const router = useRouter();
+  const [showConfirm, setShowConfirm] = useState(false);
   const menuItems = [
     { label: "アカウント", onClick: () => alert("アカウント") },
     { label: "ヘルプ", onClick: () => alert("ヘルプ") },
-    { label: "お問い合わせ", element: (
+    {
+      label: "お問い合わせ",
+      element: (
         <a href="/student/question">
           <button
             style={{
@@ -20,10 +23,11 @@ const SettingMenu: React.FC = () => {
               background: "#f5f5f5",
               cursor: "pointer",
               color: "#222",
-              transition: "background 0.2s, border-color 0.2s",
+              transition: "background 0.2s, borderColor 0.2s",
               boxSizing: "border-box",
             }}
             onMouseOver={e => {
+
               e.currentTarget.style.background = '#e0e0e0';
               e.currentTarget.style.borderColor = '#888';
             }}
@@ -38,20 +42,14 @@ const SettingMenu: React.FC = () => {
       )
     },
     { label: "タイトルへ戻る", onClick: () => router.push("/") },
-    { label: "ログアウト", onClick: () => alert("ログアウト") },
+    { label: "ログアウト", onClick: () => setShowConfirm(true) },
   ];
 
-  // デバッグ用: routerが正しく取得できているか確認
-  useEffect(() => {
-    console.log("router:", router);
-  }, [router]);
-
   return (
-    <div style={{ maxWidth: 340, margin: "40px auto", padding: 24, background: "#dcdcdc" }}>
-      {/* <h2 style={{ fontSize: 22, fontWeight: "bold", marginBottom: 24, textAlign: "center" }}>設定</h2> */}
+    <div style={{ maxWidth: 340, margin: "40px auto", padding: 24, background: "#dcdcdc", position: 'relative' }}>
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        {menuItems.map((item) => (
-          <li key={item.label} style={{ marginBottom: 40 }}>
+        {menuItems.map((item, index) => (
+          <li key={index} style={{ marginBottom: 40 }}>
             {item.element ? item.element : (
               <button
                 onClick={item.onClick}
@@ -63,9 +61,9 @@ const SettingMenu: React.FC = () => {
                   borderRadius: 8,
                   background: "#f5f5f5",
                   cursor: "pointer",
-                  fontWeight: item.label === "ログアウト" ? "bold" : undefined,
                   color: item.label === "ログアウト" ? "#e53935" : "#222",
-                  transition: "background 0.2s, border-color 0.2s",
+                  fontWeight: item.label === "ログアウト" ? "bold" : undefined,
+                  transition: "background 0.2s, borderColor 0.2s",
                   boxSizing: "border-box",
                 }}
                 onMouseOver={e => {
@@ -83,8 +81,41 @@ const SettingMenu: React.FC = () => {
           </li>
         ))}
       </ul>
+      {showConfirm && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.3)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <div style={{ background: '#fff', borderRadius: 12, padding: 32, minWidth: 260, textAlign: 'center', boxShadow: '0 2px 16px #0002' }}>
+            <div style={{ fontSize: 18, marginBottom: 24 }}>本当にログアウトしますか？</div>
+            <div style={{ display: 'flex', gap: 24, justifyContent: 'center' }}>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("schoolInfo");
+                  localStorage.removeItem("studentHomeBgColor");
+                  setShowConfirm(false);
+                  router.push("/login");
+                }}
+                style={{ background: '#e53935', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 'bold', fontSize: 16, cursor: 'pointer' }}
+              >OK</button>
+              <button
+                onClick={() => setShowConfirm(false)}
+                style={{ background: '#bbb', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 'bold', fontSize: 16, cursor: 'pointer' }}
+              >キャンセル</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
+}
 
 export default SettingMenu;
