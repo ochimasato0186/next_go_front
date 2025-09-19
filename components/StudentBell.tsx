@@ -1,9 +1,14 @@
 import { BsBell } from "react-icons/bs";
 
-export default function StudentBell({ count }: { count?: number }) {
+type Props = {
+  count?: number;
+  color?: string;
+};
+
+export default function StudentBell({ count, color = "#222" }: Props) {
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
-      <BsBell size={32} />
+      <BsBell size={32} color={color} />
       {count && count > 0 && (
         <span
           style={{
