@@ -24,41 +24,81 @@ export default function Home() {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "#001f3f", // ← 紺色
+            position: "relative",
           }}
         >
+          {/* 3Dモデルを画面中央に配置 */}
           <div
             style={{
               width: "100%",
-              maxWidth: "320px",
-              height: "400px",
-              margin: "0 auto",
+              height: "45%", // 60%から45%にさらに縮小
               display: "flex",
+              alignItems: "center", // 中央に戻して3Dモデルが自由に移動できるように
               justifyContent: "center",
-              alignItems: "center",
-              overflow: "hidden",
-              position: "relative",
-              background: "transparent",
+              position: "relative", // 追加：3Dモデルの位置調整を可能にする
             }}
           >
+            <Scene />
+          </div>
+          
+          {/* チャットエリアを下部に配置 */}
+          <div
+            style={{
+              height: "55%", // 40%から55%にさらに拡大
+              display: "flex",
+              flexDirection: "column",
+              padding: "10px",
+              gap: "10px",
+            }}
+          >
+            {/* チャット履歴表示エリア */}
             <div
               style={{
-                transform: "scale(1.3)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%",
+                flex: 1,
+                background: "#fff",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
+                padding: "8px",
+                overflowY: "auto",
+                fontSize: "14px",
               }}
             >
-              <Scene />
+              <div style={{ marginBottom: "5px", color: "#666" }}>
+                チャット履歴がここに表示されます...
+              </div>
+            </div>
+            
+            {/* 入力エリア */}
+            <div style={{ display: "flex", gap: "8px" }}>
+              <input
+                type="text"
+                placeholder="メッセージを入力..."
+                style={{
+                  flex: 1,
+                  height: "40px",
+                  padding: "0 12px",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                  background: "#fff",
+                  fontSize: "14px",
+                }}
+              />
+              <button
+                style={{
+                  width: "60px",
+                  height: "40px",
+                  background: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                }}
+              >
+                送信
+              </button>
             </div>
           </div>
-          <input
-            type="text"
-            placeholder="入力する"
-            className="border border-gray-400 rounded px-4 w-64"
-            style={{ height: "49px", marginTop: "-26.5px", background: "#fff" }}
-          />
         </main>
 
         <StudentFooter />
