@@ -23,7 +23,7 @@ export default function Home() {
     }));
     // ここで登録処理を実装（API連携など）
     if (role === "teacher") {
-      router.push("/teacher");
+      router.push("/maker");
     } else {
       router.push("/student");
     }

@@ -83,7 +83,7 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
               <div className={styles.sidebarContent}>
                 {/* サイドバー：ホームボタン */}
                 <button
-                  className={`px-4 py-2 rounded w-full mb-4 ${stylesBtn.sidebarBtn}`}
+                  className={stylesBtn.sidebarBtn}
                   onClick={() => {
                     router.push("/maker");
                     setSidebarOpen(false);
@@ -93,7 +93,7 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 </button>
                 {/* サイドバー：設定ボタン */}
                 <button
-                  className={`px-4 py-2 rounded w-full mb-4 ${stylesBtn.sidebarBtn}`}
+                  className={stylesBtn.sidebarBtn}
                   onClick={() => {
                     router.push("/maker/setting");
                     setSidebarOpen(false);
@@ -103,7 +103,7 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 </button>
                 {/* サイドバー：統計ボタン */}
                 <button
-                  className={`px-4 py-2 rounded w-full mb-4 ${stylesBtn.sidebarBtn}`}
+                  className={stylesBtn.sidebarBtn}
                   onClick={() => {
                     router.push("/maker/date");
                     setSidebarOpen(false);
@@ -113,7 +113,7 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 </button>
                 {/* サイドバー：ユーザー情報ボタン */}
                 <button
-                  className={`px-4 py-2 rounded w-full mb-4 ${stylesBtn.sidebarBtn}`}
+                  className={stylesBtn.sidebarBtn}
                   onClick={() => {
                     router.push("/maker/user");
                     setSidebarOpen(false);
@@ -123,7 +123,7 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 </button>
                 {/* サイドバー：ログアウトボタン */}
                 <button
-                  className={`px-4 py-2 rounded w-full mb-4 ${stylesBtn.sidebarBtn}`}
+                  className={stylesBtn.sidebarBtn}
                   onClick={() => {
                     router.push("/");
                     setSidebarOpen(false);

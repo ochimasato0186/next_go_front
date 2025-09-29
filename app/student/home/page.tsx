@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
 import SmartphoneHeader from "../../../components/SmartphoneHeader";
 import StudentBell from "../../../components/StudentBell";
@@ -7,6 +8,15 @@ import StudentFooter from "../../../components/StudentFooter";
 import Scene from "../../../components/Scene";
 
 export default function Home() {
+  const [message, setMessage] = useState(""); // 入力テキスト管理
+  const [chatHistory, setChatHistory] = useState<string[]>([]); // チャット履歴管理
+
+  const handleSend = () => {
+    if (!message.trim()) return; // 空なら何もしない
+    setChatHistory((prev) => [...prev, message]); // 履歴に追加
+    setMessage(""); // 入力欄をクリア
+  };
+
   return (
     <div className="flex items-center justify-center w-full h-full">
       <SmartphoneFrame>
@@ -16,42 +26,43 @@ export default function Home() {
         </div>
 
         <main
-          className="flex flex-col justify-center items-center w-full"
+          className="flex flex-col w-full"
           style={{
             width: "100%",
             flex: 1,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            flexDirection: "column",
             backgroundColor: "#001f3f", // ← 紺色
             position: "relative",
+            paddingBottom: "60px", // フッター分の余白を追加
           }}
         >
-          {/* 3Dモデルを画面中央に配置 */}
+          <div style={{ height: "110px" }}></div>
+          
+          {/* 3Dモデル */}
           <div
             style={{
               width: "100%",
-              height: "45%", // 60%から45%にさらに縮小
+              height: "40%",
               display: "flex",
-              alignItems: "center", // 中央に戻して3Dモデルが自由に移動できるように
+              alignItems: "center",
               justifyContent: "center",
-              position: "relative", // 追加：3Dモデルの位置調整を可能にする
+              position: "relative",
             }}
           >
             <Scene />
           </div>
           
-          {/* チャットエリアを下部に配置 */}
+          {/* チャット履歴 */}
           <div
             style={{
-              height: "55%", // 40%から55%にさらに拡大
+              height: "40%",
               display: "flex",
               flexDirection: "column",
-              padding: "10px",
-              gap: "10px",
+              padding: "0 10px",
+              margin: "0",
             }}
           >
-            {/* チャット履歴表示エリア */}
             <div
               style={{
                 flex: 1,
@@ -61,18 +72,40 @@ export default function Home() {
                 padding: "8px",
                 overflowY: "auto",
                 fontSize: "14px",
+                marginBottom: "8px",
               }}
             >
-              <div style={{ marginBottom: "5px", color: "#666" }}>
-                チャット履歴がここに表示されます...
-              </div>
+              {chatHistory.length === 0 ? (
+                <div style={{ marginBottom: "5px", color: "#666" }}>
+                  チャット履歴がここに表示されます...
+                </div>
+              ) : (
+                chatHistory.map((msg, i) => (
+                  <div key={i} style={{ marginBottom: "5px" }}>
+                    {msg}
+                  </div>
+                ))
+              )}
             </div>
+          </div>
             
-            {/* 入力エリア */}
-            <div style={{ display: "flex", gap: "8px" }}>
+          {/* 入力エリア */}
+          <div 
+            style={{
+              height: "20%",
+              display: "flex",
+              alignItems: "flex-start",
+              padding: "5px 10px",
+              marginBottom: "5mm",
+            }}
+          >
+            <div style={{ display: "flex", gap: "8px", width: "100%" }}>
               <input
                 type="text"
-                placeholder="メッセージを入力..."
+                placeholder="AIに質問を入力..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 style={{
                   flex: 1,
                   height: "40px",
@@ -84,6 +117,7 @@ export default function Home() {
                 }}
               />
               <button
+                onClick={handleSend}
                 style={{
                   width: "60px",
                   height: "40px",

@@ -46,7 +46,7 @@ const SettingMenu: React.FC = () => {
   ];
 
   return (
-    <div style={{ maxWidth: 340, margin: "40px auto", padding: 24, background: "#dcdcdc", position: 'relative' }}>
+    <div style={{ maxWidth: 340, margin: "40px auto", padding: 24, position: 'relative' }}>
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {menuItems.map((item, index) => (
           <li key={index} style={{ marginBottom: 40 }}>
