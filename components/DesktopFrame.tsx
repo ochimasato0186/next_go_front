@@ -111,6 +111,16 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 >
                   統計
                 </button>
+                {/* サイドバー：カレンダーボタン */}
+                <button
+                  className={stylesBtn.sidebarBtn}
+                  onClick={() => {
+                    router.push("/maker/calendar");
+                    setSidebarOpen(false);
+                  }}
+                >
+                  カレンダー
+                </button>
                 {/* サイドバー：ユーザー情報ボタン */}
                 <button
                   className={stylesBtn.sidebarBtn}
@@ -134,7 +144,9 @@ const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => 
               </div>
             </div>
           )}
-          <div className={styles.main}>{children}</div>
+          <div className={styles.main}>
+            {children}
+          </div>
         </div>
         {/* フッター */}
         <div className={styles.footer}>© 2025 管理者アプリ</div>

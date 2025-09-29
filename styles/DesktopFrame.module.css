@@ -25,7 +25,7 @@
   flex: 1;
   position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 0; /* flexbox子要素の最小高さ制限を解除 */
 }
 
 .header {
@@ -89,8 +89,31 @@
 
 .main {
   flex: 1;
-  padding: 40px;
-  overflow: auto;
+  position: relative;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* スクロール可能なコンテンツ領域 */
+.main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.main::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .footer {
