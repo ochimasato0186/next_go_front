@@ -9,7 +9,7 @@ import { RiPrinterLine } from "react-icons/ri";
 import { BsBell } from "react-icons/bs";
 import Link from "next/link";
 
-const iconMap: Record<string, React.ElementType> = {
+const iconMap: Record<string, React.ComponentType<any>> = {
   FaHome,
   FaCalendarDays,
   IoMdSettings,
