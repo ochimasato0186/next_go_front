@@ -1,37 +1,65 @@
+"use client";
 import DesktopFrame from "../../../components/DesktopFrame";
+import EventCalendar, { Event } from "../../../components/EventCalendar";
+import { useState, useEffect } from "react";
 
 export default function MakerCalendar() {
+  const [events, setEvents] = useState<Event[]>([]);
+
+  // サンプルイベントデータを初期化
+  useEffect(() => {
+    setEvents([
+      {
+        id: "1",
+        date: "2025-09-29",
+        title: "システムメンテナンス",
+        time: "14:00",
+        description: "定期メンテナンス作業",
+        color: "#ef4444"
+      },
+      {
+        id: "2",
+        date: "2025-09-30",
+        title: "会議",
+        time: "10:00",
+        description: "月次進捗会議",
+        color: "#3b82f6"
+      }
+    ]);
+  }, []);
+
+  // 新しいイベントを追加
+  const handleEventAdd = (newEvent: Omit<Event, 'id'>) => {
+    const eventWithId: Event = {
+      ...newEvent,
+      id: Date.now().toString()
+    };
+    setEvents(prevEvents => [...prevEvents, eventWithId]);
+  };
+
+  // イベント編集
+  const handleEventEdit = (id: string, eventData: Omit<Event, "id">) => {
+    setEvents(prevEvents => prevEvents.map(event => 
+      event.id === id 
+        ? { ...eventData, id } 
+        : event
+    ));
+  };
+
+  // イベント削除
+  const handleEventDelete = (id: string) => {
+    setEvents(prevEvents => prevEvents.filter(event => event.id !== id));
+  };
+
   return (
     <DesktopFrame>
-      <div style={{ padding: "20px" }}>
-        <h1 style={{ 
-          fontSize: "28px", 
-          fontWeight: "bold", 
-          marginBottom: "24px", 
-          color: "#2d3748",
-          borderBottom: "2px solid #3182ce",
-          paddingBottom: "8px"
-        }}>
-          カレンダー
-        </h1>
-        
-        <div style={{ 
-          background: "#fff", 
-          borderRadius: "12px", 
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-          padding: "24px",
-          border: "1px solid #e2e8f0"
-        }}>
-          <p style={{ 
-            fontSize: "16px", 
-            color: "#4a5568",
-            textAlign: "center",
-            margin: 0
-          }}>
-            カレンダー機能を実装予定です。<br />
-            ここにスケジュール管理やイベント表示機能を追加できます。
-          </p>
-        </div>
+      <div style={{ padding: "20px", height: "100%", overflow: "auto" }}>
+        <EventCalendar 
+          events={events} 
+          onEventAdd={handleEventAdd}
+          onEventEdit={handleEventEdit}
+          onEventDelete={handleEventDelete}
+        />
       </div>
     </DesktopFrame>
   );
