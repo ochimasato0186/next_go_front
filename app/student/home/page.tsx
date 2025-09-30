@@ -3,9 +3,9 @@
 import { useState } from "react";
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
 import SmartphoneHeader from "../../../components/SmartphoneHeader";
-import StudentBell from "../../../components/StudentBell";
-import StudentFooter from "../../../components/StudentFooter";
-import Scene from "../../../components/Scene";
+import StudentBell from "../../../components/student/StudentBell";
+import StudentFooter from "../../../components/student/StudentFooter";
+import Scene from "../../../components/3D/Scene";
 
 export default function Home() {
   const [message, setMessage] = useState(""); // 入力テキスト管理

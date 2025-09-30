@@ -1,7 +1,10 @@
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
 import SmartphoneHeader from "../../../components/SmartphoneHeader";
 import CommonFooter from "../../../components/CommonFooter";
-import StudentBell from "../../../components/StudentBell";
+"use client";
+import DesktopFrame from "../../../components/DesktopFrame";
+import { useState } from "react";
+import StudentBell from "../../../components/student/StudentBell";
 
 export default function Home() {
   return (

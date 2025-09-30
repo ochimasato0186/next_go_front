@@ -1,8 +1,8 @@
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
 import SmartphoneHeader from "../../../components/SmartphoneHeader";
-import StudentFooter from "../../../components/StudentFooter";
+import StudentFooter from "../../../components/student/StudentFooter";
 import Calendar from "../../../components/Calendar";
-import StudentBell from "../../../components/StudentBell";
+import StudentBell from "../../../components/student/StudentBell";
 
 export default function Home() {
   return (

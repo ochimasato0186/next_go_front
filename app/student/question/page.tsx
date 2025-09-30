@@ -2,8 +2,8 @@
 import { useState } from "react";
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
 import SmartphoneHeader from "../../../components/SmartphoneHeader";
-import StudentBell from "../../../components/StudentBell";
-import StudentFooter from "../../../components/StudentFooter";
+import StudentBell from "../../../components/student/StudentBell";
+import StudentFooter from "../../../components/student/StudentFooter";
 
 export default function QuestionPage() {
 	const [form, setForm] = useState({

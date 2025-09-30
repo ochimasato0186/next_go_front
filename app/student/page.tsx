@@ -6,8 +6,8 @@ import Image from "next/image";
 import SmartphoneFrame from "../../components/SmartphoneFrame";
 import Link from "next/link";
 import SmartphoneHeader from "../../components/SmartphoneHeader";
-import StudentBell from "../../components/StudentBell";
-import StudentFooter from "../../components/StudentFooter";
+import StudentBell from "../../components/student/StudentBell";
+import StudentFooter from "../../components/student/StudentFooter";
 
 export default function Home() {
   return (

@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import DesktopFrame from "../../../components/DesktopFrame";
-import ToukeiPieChart from "../../../components/toukei";
-import ToukeiLineChart from "../../../components/ToukeiLineChart";
-import MultiLineChart from "../../../components/MultiLineChart";
+import ToukeiPieChart from "../../../components/maker/toukei";
+import ToukeiLineChart from "../../../components/maker/ToukeiLineChart";
+import MultiLineChart from "../../../components/maker/MultiLineChart";
 
 export default function Maker() {
 

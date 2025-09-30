@@ -1,8 +1,8 @@
 import SmartphoneFrame from "../../../components/SmartphoneFrame";
 import SmartphoneHeader from "../../../components/SmartphoneHeader";
 import CommonFooter from "../../../components/CommonFooter";
-import StudentBell from "../../../components/StudentBell";
-import Toukei from "../../../components/toukei";
+import StudentBell from "../../../components/student/StudentBell";
+import Toukei from "../../../components/maker/toukei";
 import type { PieData } from "../../../types/toukei";
 
 export default function Home() {

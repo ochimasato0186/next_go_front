@@ -1,5 +1,5 @@
 import React from "react";
-import type { PieData, ToukeiPieChartProps } from "../types/toukei";
+import type { PieData, ToukeiPieChartProps } from "../../types/toukei";
 const ToukeiPieChart: React.FC<ToukeiPieChartProps> = ({ data, size = 480 }) => {
   // データをvalueの降順（大きい順）にソート
   const sortedData = [...data].sort((a, b) => b.value - a.value);

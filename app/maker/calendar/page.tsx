@@ -1,6 +1,6 @@
 "use client";
 import DesktopFrame from "../../../components/DesktopFrame";
-import EventCalendar, { Event } from "../../../components/EventCalendar";
+import EventCalendar, { Event } from "../../../components/maker/EventCalendar";
 import { useState, useEffect } from "react";
 
 export default function MakerCalendar() {
