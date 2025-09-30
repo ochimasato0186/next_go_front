@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import DesktopFrame from "../../../components/DesktopFrame";
+import DesktopFrame from "../../../components/frame/DesktopFrame";
 import ToukeiPieChart from "../../../components/maker/toukei";
 import ToukeiLineChart from "../../../components/maker/ToukeiLineChart";
 import MultiLineChart from "../../../components/maker/MultiLineChart";

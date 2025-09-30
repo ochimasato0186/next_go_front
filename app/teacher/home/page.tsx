@@ -1,5 +1,5 @@
-import SmartphoneFrame from "../../../components/SmartphoneFrame";
-import SmartphoneHeader from "../../../components/SmartphoneHeader";
+import SmartphoneFrame from "../../../components/frame/SmartphoneFrame";
+import SmartphoneHeader from "../../../components/frame/SmartphoneHeader";
 import CommonFooter from "../../../components/CommonFooter";
 import StudentBell from "../../../components/student/StudentBell";
 import Toukei from "../../../components/maker/toukei";

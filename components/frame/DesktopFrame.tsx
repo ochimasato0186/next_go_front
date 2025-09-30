@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import styles from "../styles/DesktopFrame.module.css";
-import stylesBtn from "../styles/button.module.css";
+import styles from "../../styles/DesktopFrame.module.css";
+import stylesBtn from "../../styles/button.module.css";
 
 const DesktopFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

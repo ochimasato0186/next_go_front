@@ -1,4 +1,4 @@
-import DesktopFrame from "../../../components/DesktopFrame";
+import DesktopFrame from "../../../components/frame/DesktopFrame";
 
 export default function Maker() {
   return (

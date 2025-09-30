@@ -1,5 +1,5 @@
 "use client";
-import DesktopFrame from "../../components/DesktopFrame";
+import DesktopFrame from "../../components/frame/DesktopFrame";
 import { useState, useEffect } from "react";
 
 interface NewsItem {

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FaRegCircleUser } from "react-icons/fa6";
-import styles from "../styles/SmartpjoneHeader.module.css";
+import styles from "../../styles/SmartpjoneHeader.module.css";
 
 const SmartphoneHeader: React.FC = () => {
   const [userModalOpen, setUserModalOpen] = useState(false);

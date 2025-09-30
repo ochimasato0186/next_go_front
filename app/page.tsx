@@ -1,5 +1,5 @@
 "use client";
-import SmartphoneFrame from "../components/SmartphoneFrame";
+import SmartphoneFrame from "../components/frame/SmartphoneFrame";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 

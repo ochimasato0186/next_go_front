@@ -3,9 +3,9 @@
 "use client";
 
 import Image from "next/image";
-import SmartphoneFrame from "../../components/SmartphoneFrame";
+import SmartphoneFrame from "../../components/frame/SmartphoneFrame";
 import Link from "next/link";
-import SmartphoneHeader from "../../components/SmartphoneHeader";
+import SmartphoneHeader from "../../components/frame/SmartphoneHeader";
 import StudentBell from "../../components/student/StudentBell";
 import StudentFooter from "../../components/student/StudentFooter";
 

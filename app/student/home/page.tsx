@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import SmartphoneFrame from "../../../components/SmartphoneFrame";
-import SmartphoneHeader from "../../../components/SmartphoneHeader";
+import SmartphoneFrame from "../../../components/frame/SmartphoneFrame";
+import SmartphoneHeader from "../../../components/frame/SmartphoneHeader";
 import StudentBell from "../../../components/student/StudentBell";
 import StudentFooter from "../../../components/student/StudentFooter";
 import Scene from "../../../components/3D/Scene";

@@ -1,6 +1,6 @@
-import SmartphoneFrame from "../../components/SmartphoneFrame";
+import SmartphoneFrame from "../../components/frame/SmartphoneFrame";
 import Link from "next/link";
-import SmartphoneHeader from "../../components/SmartphoneHeader";
+import SmartphoneHeader from "../../components/frame/SmartphoneHeader";
 import CommonFooter from "../../components/CommonFooter";
 import StudentBell from "../../components/student/StudentBell";
 

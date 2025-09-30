@@ -1,5 +1,5 @@
-import SmartphoneFrame from "../../../components/SmartphoneFrame";
-import SmartphoneHeader from "../../../components/SmartphoneHeader";
+import SmartphoneFrame from "../../../components/frame/SmartphoneFrame";
+import SmartphoneHeader from "../../../components/frame/SmartphoneHeader";
 import StudentFooter from "../../../components/CommonFooter";
 import Calendar from "../../../components/Calendar";
 import StudentBell from "../../../components/student/StudentBell"

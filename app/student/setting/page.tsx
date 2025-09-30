@@ -1,8 +1,8 @@
 
 "use client";
 import SettingMenu from "../../../components/SettingMenu";
-import SmartphoneFrame from "../../../components/SmartphoneFrame";
-import SmartphoneHeader from "../../../components/SmartphoneHeader";
+import SmartphoneFrame from "../../../components/frame/SmartphoneFrame";
+import SmartphoneHeader from "../../../components/frame/SmartphoneHeader";
 import StudentBell from "../../../components/student/StudentBell";
 import StudentFooter from "../../../components/student/StudentFooter";
 

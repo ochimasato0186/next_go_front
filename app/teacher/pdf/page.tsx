@@ -1,8 +1,8 @@
-import SmartphoneFrame from "../../../components/SmartphoneFrame";
-import SmartphoneHeader from "../../../components/SmartphoneHeader";
+import SmartphoneFrame from "../../../components/frame/SmartphoneFrame";
+import SmartphoneHeader from "../../../components/frame/SmartphoneHeader";
 import CommonFooter from "../../../components/CommonFooter";
 "use client";
-import DesktopFrame from "../../../components/DesktopFrame";
+import DesktopFrame from "../../../components/frame/DesktopFrame";
 import { useState } from "react";
 import StudentBell from "../../../components/student/StudentBell";
 
