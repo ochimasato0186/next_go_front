@@ -2,13 +2,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../styles/SmartpjoneHeader.module.css";
+import styles from "../../styles/SmartpjoneHeader.module.css";
 import { FaHome } from "react-icons/fa";
 import { FaCalendarDays } from "react-icons/fa6";
 import { IoMdSettings } from "react-icons/io";
 import Link from "next/link";
 
-const iconMap: Record<string, React.ElementType> = {
+const iconMap: Record<string, React.ComponentType<any>> = {
   FaHome,
   FaCalendarDays,
   IoMdSettings,
