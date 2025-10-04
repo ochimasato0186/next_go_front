@@ -7,22 +7,25 @@ interface User {
   name: string;
   grade: string;
   class: string;
+  email: string;
   remarks: string;
 }
 
 export default function MakerUser() {
-  // サンプルデータ（実際の運用では API から取得）
+  // TODO: 将来的にFirebase Firestoreから取得予定
+  // const { users, loading, error } = useFirebaseUsers();
+  // サンプルデータ（実際の運用では Firebase Firestore から取得）
   const [users] = useState<User[]>([
-    { id: 1, name: "田中 太郎", grade: "1年", class: "A組", remarks: "学級委員" },
-    { id: 2, name: "佐藤 花子", grade: "1年", class: "A組", remarks: "図書委員" },
-    { id: 3, name: "山田 次郎", grade: "1年", class: "B組", remarks: "体育委員" },
-    { id: 4, name: "鈴木 美咲", grade: "2年", class: "A組", remarks: "生徒会役員" },
-    { id: 5, name: "高橋 健太", grade: "2年", class: "B組", remarks: "文化祭実行委員" },
-    { id: 6, name: "中村 愛美", grade: "2年", class: "C組", remarks: "放送委員" },
-    { id: 7, name: "小林 大輔", grade: "3年", class: "A組", remarks: "部活動部長" },
-    { id: 8, name: "加藤 優子", grade: "3年", class: "B組", remarks: "卒業委員" },
-    { id: 9, name: "渡辺 雄一", grade: "3年", class: "C組", remarks: "進路委員" },
-    { id: 10, name: "松本 理恵", grade: "1年", class: "C組", remarks: "環境委員" }
+    { id: 1, name: "田中 太郎", grade: "1年", class: "A組", email: "tanaka.taro@school.edu.jp", remarks: "学級委員" },
+    { id: 2, name: "佐藤 花子", grade: "1年", class: "A組", email: "sato.hanako@school.edu.jp", remarks: "図書委員" },
+    { id: 3, name: "山田 次郎", grade: "1年", class: "B組", email: "yamada.jiro@school.edu.jp", remarks: "体育委員" },
+    { id: 4, name: "鈴木 美咲", grade: "2年", class: "A組", email: "suzuki.misaki@school.edu.jp", remarks: "生徒会役員" },
+    { id: 5, name: "高橋 健太", grade: "2年", class: "B組", email: "takahashi.kenta@school.edu.jp", remarks: "文化祭実行委員" },
+    { id: 6, name: "中村 愛美", grade: "2年", class: "C組", email: "nakamura.manami@school.edu.jp", remarks: "放送委員" },
+    { id: 7, name: "小林 大輔", grade: "3年", class: "A組", email: "kobayashi.daisuke@school.edu.jp", remarks: "部活動部長" },
+    { id: 8, name: "加藤 優子", grade: "3年", class: "B組", email: "kato.yuko@school.edu.jp", remarks: "卒業委員" },
+    { id: 9, name: "渡辺 雄一", grade: "3年", class: "C組", email: "watanabe.yuichi@school.edu.jp", remarks: "進路委員" },
+    { id: 10, name: "松本 理恵", grade: "1年", class: "C組", email: "matsumoto.rie@school.edu.jp", remarks: "環境委員" }
   ]);
 
   return (
@@ -91,6 +94,15 @@ export default function MakerUser() {
                   width: "80px"
                 }}>
                   クラス
+                </th>
+                <th style={{ 
+                  padding: "16px 12px", 
+                  textAlign: "left", 
+                  fontWeight: "600",
+                  fontSize: "15px",
+                  width: "200px"
+                }}>
+                  メールアドレス
                 </th>
                 <th style={{ 
                   padding: "16px 12px", 
@@ -166,6 +178,35 @@ export default function MakerUser() {
                     }}>
                       {user.class}
                     </span>
+                  </td>
+                  <td style={{ 
+                    padding: "14px 12px",
+                    color: "#4a5568",
+                    fontSize: "13px"
+                  }}>
+                    <a 
+                      href={`mailto:${user.email}`}
+                      style={{
+                        color: "#3182ce",
+                        textDecoration: "none",
+                        background: "#f7fafc",
+                        padding: "4px 8px",
+                        borderRadius: "6px",
+                        border: "1px solid #e2e8f0",
+                        display: "inline-block",
+                        transition: "all 0.2s ease"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#e6f3ff";
+                        e.currentTarget.style.borderColor = "#3182ce";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "#f7fafc";
+                        e.currentTarget.style.borderColor = "#e2e8f0";
+                      }}
+                    >
+                      {user.email}
+                    </a>
                   </td>
                   <td style={{ 
                     padding: "14px 12px",
