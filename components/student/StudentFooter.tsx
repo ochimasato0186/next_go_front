@@ -18,26 +18,33 @@ const StudentFooter: React.FC = () => {
   const [items, setItems] = useState<Array<{ icon: string; href: string }>>([]);
 
   useEffect(() => {
-    fetch("/icon.json")
-      .then((res) => res.json())
-      .then((data) => setItems(data));
+    const fetchItems = async () => {
+      try {
+        const response = await fetch("/icon.json");
+        const data = await response.json();
+        setItems(data); // data.itemsではなくdataに変更
+      } catch (error) {
+        console.error("Failed to fetch items:", error);
+      }
+    };
+
+    fetchItems();
   }, []);
 
   return (
     <footer className={styles.studentFooter}>
-      <div style={{ display: "flex", width: "100%", height: "100%" }}>
-        {items.map((item, idx) => {
-          const Icon = iconMap[item.icon];
-          // 左・中央・右の配置を維持
-          let justify: "flex-start" | "center" | "flex-end" = "center";
-          let pad = {};
-          if (idx === 0) { justify = "flex-start"; pad = { paddingLeft: "1.5cm" }; }
-          if (idx === 1) { justify = "center"; pad = {}; }
-          if (idx === 2) { justify = "flex-end"; pad = { paddingRight: "1.5cm" }; }
+      <div style={{ display: "flex", width: "100%", height: "100%", justifyContent: "space-between" }}>
+        {items.map((item, index) => {
+          const IconComponent = iconMap[item.icon];
+          
+          if (!IconComponent) {
+            return null;
+          }
+
           return (
-            <div key={item.icon} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: justify, height: "100%", ...pad }}>
+            <div key={index} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
               <Link href={item.href} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "1.5cm", height: "1.5cm" }}>
-                {Icon && <Icon color="#fff" size={57} style={{ width: "1.5cm", height: "1.5cm" }} />}
+                <IconComponent color="#fff" size={57} style={{ width: "1.5cm", height: "1.5cm" }} />
               </Link>
             </div>
           );

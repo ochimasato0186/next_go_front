@@ -2,18 +2,61 @@
 import React, { useState, useEffect } from "react";
 import { FaRegCircleUser } from "react-icons/fa6";
 import styles from "../../styles/SmartpjoneHeader.module.css";
+import { getCurrentUser, User } from "../../lib/userManager";
 
 const SmartphoneHeader: React.FC = () => {
   const [userModalOpen, setUserModalOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState<{ name: string; email: string; school: string } | null>(null);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
+    // 新しいユーザー管理システムから現在のユーザー情報を取得
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      setUserInfo(currentUser);
+      return;
+    }
+    
+    // フォールバック1: 従来のlocalStorageから読み込み
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      try {
+        const parsedUserInfo = JSON.parse(storedUserInfo);
+        // 既存データを新しい形式に変換
+        const convertedUser: User = {
+          id: parsedUserInfo.userId || Date.now().toString(),
+          email: parsedUserInfo.email,
+          name: parsedUserInfo.name,
+          school: parsedUserInfo.school,
+          role: parsedUserInfo.role || 'student',
+          password: '', // パスワードは表示しない
+          createdAt: new Date().toISOString()
+        };
+        setUserInfo(convertedUser);
+        return;
+      } catch (error) {
+        console.error('Failed to parse stored user info:', error);
+      }
+    }
+    
+    // フォールバック2: userInfo.jsonから読み込み
     fetch("/userInfo.json")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load");
         return res.json();
       })
-      .then((data) => setUserInfo(data))
+      .then((data) => {
+        // 既存データを新しい形式に変換
+        const convertedUser: User = {
+          id: data.userId || Date.now().toString(),
+          email: data.email,
+          name: data.name,
+          school: data.school,
+          role: 'student', // デフォルト
+          password: '', // パスワードは表示しない
+          createdAt: new Date().toISOString()
+        };
+        setUserInfo(convertedUser);
+      })
       .catch(() => setUserInfo(null));
   }, []);
 
@@ -53,7 +96,9 @@ const SmartphoneHeader: React.FC = () => {
               <>
                 <div className={styles.modalItem}>メールアドレス：{userInfo.email}</div>
                 <div className={styles.modalItem}>ユーザー名：{userInfo.name}</div>
-                <div className={styles.modalItem}>学校,所属名：{userInfo.school}</div>
+                <div className={styles.modalItem}>学校名：{userInfo.school}</div>
+                {userInfo.role && <div className={styles.modalItem}>ロール：{userInfo.role === 'student' ? '生徒' : '教師'}</div>}
+                <div className={styles.modalItem}>ユーザーID：{userInfo.id}</div>
               </>
             ) : (
               <div className={styles.modalItem}>読み込み失敗しました</div>

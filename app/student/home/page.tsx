@@ -6,10 +6,12 @@ import SmartphoneHeader from "../../../components/frame/SmartphoneHeader";
 import StudentBell from "../../../components/student/StudentBell";
 import StudentFooter from "../../../components/student/StudentFooter";
 import Scene from "../../../components/3D/Scene";
+import { useNews } from "../../../hooks/useNews";
 
 export default function Home() {
   const [message, setMessage] = useState(""); // 入力テキスト管理
   const [chatHistory, setChatHistory] = useState<string[]>([]); // チャット履歴管理
+  const { newNewsCount } = useNews(); // ニュースカウントを取得
 
   const handleSend = () => {
     if (!message.trim()) return; // 空なら何もしない
@@ -22,7 +24,7 @@ export default function Home() {
       <SmartphoneFrame>
         <SmartphoneHeader />
         <div style={{ position: "absolute", top: "25mm", right: "3mm", zIndex: 50 }}>
-          <StudentBell count={3} color="#fff" />
+          <StudentBell count={newNewsCount} color="#fff" />
         </div>
 
         <main

@@ -1,4 +1,8 @@
+"use client";
+
 import { BsBell } from "react-icons/bs";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type Props = {
   count?: number;
@@ -6,8 +10,27 @@ type Props = {
 };
 
 export default function StudentBell({ count, color = "#222" }: Props) {
+  const router = useRouter();
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleClick = () => {
+    router.push("/student/bell");
+  };
+
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
+    <div 
+      style={{ 
+        position: "relative", 
+        display: "inline-block",
+        cursor: "pointer",
+        transform: isHovered ? "scale(1.1)" : "scale(1)",
+        transition: "transform 0.2s ease",
+      }}
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      title="通知・お知らせを見る"
+    >
       <BsBell size={32} color={color} />
       {count && count > 0 && (
         <span
@@ -24,6 +47,7 @@ export default function StudentBell({ count, color = "#222" }: Props) {
             minWidth: 20,
             textAlign: "center",
             lineHeight: 1.2,
+            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
           }}
         >
           {count}

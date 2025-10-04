@@ -2,30 +2,58 @@
 import SmartphoneFrame from "../components/frame/SmartphoneFrame";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { registerUser } from "../lib/userManager";
 
 export default function Home() {
   const [role, setRole] = useState<"student" | "teacher" | null>(null);
   const [school, setSchool] = useState("");
+  const [userName, setUserName] = useState("");
   const [grade, setGrade] = useState("");
   const [className, setClassName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!role) return alert("生徒用か教師用を選択してください");
-    // 入力値をlocalStorageに保存
-    localStorage.setItem("schoolInfo", JSON.stringify({
-      school,
-      grade,
-      className
-    }));
-    // ここで登録処理を実装（API連携など）
-    if (role === "teacher") {
-      router.push("/maker");
-    } else {
-      router.push("/student");
+    
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      // 新しいユーザー管理システムでユーザー登録
+      await registerUser({
+        email,
+        name: userName,
+        school,
+        grade,
+        className,
+        role,
+        password
+      });
+      
+      // 従来のlocalStorage保存（互換性のため）
+      localStorage.setItem("schoolInfo", JSON.stringify({
+        school,
+        userName,
+        grade,
+        className,
+        email
+      }));
+      
+      // 登録成功時のリダイレクト
+      if (role === "teacher") {
+        router.push("/maker");
+      } else {
+        router.push("/student/home");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "登録に失敗しました");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,11 +119,42 @@ export default function Home() {
               onSubmit={handleSubmit}
               style={{ width: "100%" }}
             >
+              {error && (
+                <div
+                  style={{
+                    padding: 12,
+                    backgroundColor: "#fee",
+                    border: "1px solid #fcc",
+                    color: "#c33",
+                    borderRadius: 8,
+                    marginBottom: 16,
+                    fontSize: 14,
+                  }}
+                >
+                  {error}
+                </div>
+              )}
+
               <div style={{ marginBottom: 20 }}>
                 <label style={{ display: "block", marginBottom: 6 }}>学校名</label>
                 <input
                   value={school}
                   onChange={(e) => setSchool(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    padding: 10,
+                    borderRadius: 6,
+                    border: "1px solid #bbb",
+                    fontSize: 16,
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ display: "block", marginBottom: 6 }}>ユーザー名</label>
+                <input
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
                   required
                   style={{
                     width: "100%",
@@ -174,21 +233,23 @@ export default function Home() {
               </div>
               <button
                 type="submit"
+                disabled={isLoading}
                 style={{
                   width: 140,
                   padding: "8px 0",
                   fontSize: 16,
-                  background: "#1976d2",
+                  background: isLoading ? "#ccc" : "#1976d2",
                   color: "#fff",
                   border: "none",
                   borderRadius: 8,
                   fontWeight: "bold",
-                  cursor: "pointer",
+                  cursor: isLoading ? "not-allowed" : "pointer",
                   margin: "0 auto 16px auto",
-                  display: "block"
+                  display: "block",
+                  opacity: isLoading ? 0.6 : 1
                 }}
               >
-                登録
+                {isLoading ? "登録中..." : "登録"}
               </button>
             </form>
             <button

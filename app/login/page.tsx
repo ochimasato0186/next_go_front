@@ -1,29 +1,64 @@
 "use client";
 
-
 import SmartphoneFrame from "../../components/frame/SmartphoneFrame";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { loginUser } from "../../lib/userManager";
 
 export default function Login() {
   const [school, setSchool] = useState("");
+  const [email, setEmail] = useState("");
   const [grade, setGrade] = useState("");
   const [className, setClassName] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // ここで認証処理を実装（API連携など）
-    // 仮で生徒/教師判定はせずstudentに遷移
-    router.push("/student");
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      const user = await loginUser(email, password);
+      
+      if (user) {
+        // ログイン成功時のリダイレクト
+        if (user.role === "teacher") {
+          router.push("/teacher");
+        } else {
+          router.push("/student");
+        }
+      } else {
+        setError("メールアドレスまたはパスワードが正しくありません");
+      }
+    } catch (err) {
+      setError("ログインに失敗しました");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <SmartphoneFrame>
       <div style={{ maxWidth: 340, margin: "40px auto", padding: 24, background: "#f5f5f5", borderRadius: 12, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
         <h2 style={{ fontSize: 22, fontWeight: "bold", marginBottom: 24, textAlign: "center" }}>ログイン</h2>
+        
+        {error && (
+          <div style={{
+            background: "#fee",
+            color: "#c53030",
+            padding: "12px",
+            borderRadius: "6px",
+            marginBottom: "16px",
+            fontSize: "14px",
+            textAlign: "center"
+          }}>
+            {error}
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 20 }}>
             <label style={{ display: 'block', marginBottom: 6 }}>学校名</label>
@@ -63,27 +98,32 @@ export default function Login() {
               />
             </div>
           </div>
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ display: 'block', marginBottom: 6 }}>メールアドレス</label>
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
+          </div>
           <div style={{ marginBottom: 24 }}>
             <label style={{ display: 'block', marginBottom: 6 }}>パスワード</label>
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
           </div>
           <button
             type="submit"
+            disabled={isLoading}
             style={{
               width: 140,
               padding: "8px 0",
               fontSize: 16,
-              background: "#e53935",
+              background: isLoading ? "#ccc" : "#e53935",
               color: "#fff",
               border: "none",
               borderRadius: 8,
               fontWeight: "bold",
-              cursor: "pointer",
+              cursor: isLoading ? "not-allowed" : "pointer",
               margin: "0 auto",
               display: "block"
             }}
           >
-            ログイン
+            {isLoading ? "ログイン中..." : "ログイン"}
           </button>
         </form>
       </div>
