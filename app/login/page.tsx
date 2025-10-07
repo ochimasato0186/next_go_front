@@ -3,13 +3,10 @@
 import SmartphoneFrame from "../../components/frame/SmartphoneFrame";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginUser } from "../../lib/userManager";
+import { loginWithEmail } from "../../lib/firebase/auth";
 
 export default function Login() {
-  const [school, setSchool] = useState("");
   const [email, setEmail] = useState("");
-  const [grade, setGrade] = useState("");
-  const [className, setClassName] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,20 +18,34 @@ export default function Login() {
     setError("");
     
     try {
-      const user = await loginUser(email, password);
+      const user = await loginWithEmail(email, password);
       
       if (user) {
-        // ログイン成功時のリダイレクト
-        if (user.role === "teacher") {
-          router.push("/teacher");
+        console.log('ログイン成功:', user);
+        
+        // メールアドレスのドメイン部分を取得
+        const domain = email.split('@')[1];
+        
+        // 特定のドメインの場合はmaker側へリダイレクト
+        const teacherDomains = [
+          'teacher.edu.jp',      // 教師専用ドメイン例
+          'school.ac.jp',        // 学校関係者ドメイン例
+          'admin.edu.jp',        // 管理者ドメイン例
+          'maker.local'          // 開発・テスト用
+        ];
+        
+        if (teacherDomains.includes(domain)) {
+          console.log('教師用ドメインを検出:', domain);
+          router.push("/maker");
         } else {
+          console.log('生徒用ドメイン:', domain);
           router.push("/student");
         }
       } else {
         setError("メールアドレスまたはパスワードが正しくありません");
       }
-    } catch (err) {
-      setError("ログインに失敗しました");
+    } catch (err: any) {
+      setError(err.message || "ログインに失敗しました");
     } finally {
       setIsLoading(false);
     }
@@ -61,50 +72,24 @@ export default function Login() {
         
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 20 }}>
-            <label style={{ display: 'block', marginBottom: 6 }}>学校名</label>
-            <input value={school} onChange={e => setSchool(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
-          </div>
-          <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: "block", marginBottom: 6 }}>学年</label>
-              <input
-                value={grade}
-                onChange={e => setGrade(e.target.value)}
-                required
-                placeholder="例: 1"
-                style={{
-                  width: "100%",
-                  padding: 10,
-                  borderRadius: 6,
-                  border: "1px solid #bbb",
-                  fontSize: 16,
-                }}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: "block", marginBottom: 6 }}>組</label>
-              <input
-                value={className}
-                onChange={e => setClassName(e.target.value)}
-                required
-                placeholder="例: 2"
-                style={{
-                  width: "100%",
-                  padding: 10,
-                  borderRadius: 6,
-                  border: "1px solid #bbb",
-                  fontSize: 16,
-                }}
-              />
-            </div>
-          </div>
-          <div style={{ marginBottom: 20 }}>
             <label style={{ display: 'block', marginBottom: 6 }}>メールアドレス</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
+            <input 
+              type="email" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              required 
+              style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} 
+            />
           </div>
           <div style={{ marginBottom: 24 }}>
             <label style={{ display: 'block', marginBottom: 6 }}>パスワード</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
+            <input 
+              type="password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              required 
+              style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} 
+            />
           </div>
           <button
             type="submit"
@@ -126,26 +111,27 @@ export default function Login() {
             {isLoading ? "ログイン中..." : "ログイン"}
           </button>
         </form>
+        
+        <button
+          type="button"
+          onClick={() => router.push("/")}
+          style={{
+            width: 140,
+            padding: "8px 0",
+            fontSize: 14,
+            background: "#1976d2",
+            color: "#fff",
+            border: "none",
+            borderRadius: 8,
+            fontWeight: "bold",
+            cursor: "pointer",
+            margin: "24px auto 0 auto",
+            display: "block"
+          }}
+        >
+          新規登録画面へ
+        </button>
       </div>
-      <button
-        type="button"
-        onClick={() => router.push("/")}
-        style={{
-          width: 140,
-          padding: "8px 0",
-          fontSize: 14,
-          background: "#1976d2",
-          color: "#fff",
-          border: "none",
-          borderRadius: 8,
-          fontWeight: "bold",
-          cursor: "pointer",
-          margin: "24px auto 0 auto",
-          display: "block"
-        }}
-      >
-        新規登録画面へ
-      </button>
     </SmartphoneFrame>
   );
 }

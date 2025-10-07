@@ -2,42 +2,43 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { registerUser } from "../../lib/userManager";
+import { registerWithEmail } from "../../lib/firebase/auth";
 
 const RegisterForm = () => {
-  const [role, setRole] = useState<"student" | "teacher" | null>(null);
-  const [school, setSchool] = useState("");
-  const [userName, setUserName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [years, setYears] = useState("");
+  const [classValue, setClassValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!role) return alert("生徒用か教師用を選択してください");
+    
+    if (!nickname || !email || !password || !years || !classValue) {
+      setError("すべての項目を入力してください");
+      return;
+    }
     
     setIsLoading(true);
     setError("");
     
     try {
-      await registerUser({
-        email,
-        name: userName,
-        school,
-        role,
-        password
+      const user = await registerWithEmail(email, password, {
+        nickname,
+        years,
+        class: classValue
       });
       
-      // 登録成功時のリダイレクト
-      if (role === "teacher") {
-        router.push("/teacher");
-      } else {
+      if (user) {
+        console.log('新規登録成功:', user);
+        // 登録成功時のリダイレクト
         router.push("/student");
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "登録に失敗しました");
+    } catch (err: any) {
+      setError(err.message || "登録に失敗しました");
     } finally {
       setIsLoading(false);
     }
@@ -61,56 +62,70 @@ const RegisterForm = () => {
         </div>
       )}
       
-      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 24 }}>
-        <button
-          type="button"
-          onClick={() => setRole("student")}
-          style={{
-            padding: "10px 24px",
-            fontSize: 18,
-            borderRadius: 8,
-            border: role === "student" ? "2px solid #1976d2" : "1.5px solid #bbb",
-            background: role === "student" ? "#1976d2" : "#fff",
-            color: role === "student" ? "#fff" : "#222",
-            fontWeight: "bold",
-            cursor: "pointer"
-          }}
-        >
-          生徒用
-        </button>
-        <button
-          type="button"
-          onClick={() => setRole("teacher")}
-          style={{
-            padding: "10px 24px",
-            fontSize: 18,
-            borderRadius: 8,
-            border: role === "teacher" ? "2px solid #1976d2" : "1.5px solid #bbb",
-            background: role === "teacher" ? "#1976d2" : "#fff",
-            color: role === "teacher" ? "#fff" : "#222",
-            fontWeight: "bold",
-            cursor: "pointer"
-          }}
-        >
-          教師用
-        </button>
-      </div>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: 20 }}>
-          <label style={{ display: 'block', marginBottom: 6 }}>学校名</label>
-          <input value={school} onChange={e => setSchool(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
+          <label style={{ display: 'block', marginBottom: 6 }}>ニックネーム</label>
+          <input 
+            value={nickname} 
+            onChange={e => setNickname(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} 
+          />
         </div>
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: 'block', marginBottom: 6 }}>ユーザー名</label>
-          <input value={userName} onChange={e => setUserName(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
+        <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
+          <div style={{ flex: 1 }}>
+            <label style={{ display: 'block', marginBottom: 6 }}>学年</label>
+            <select 
+              value={years} 
+              onChange={e => setYears(e.target.value)} 
+              required 
+              style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }}
+            >
+              <option value="">選択してください</option>
+              <option value="1年">1年</option>
+              <option value="2年">2年</option>
+              <option value="3年">3年</option>
+              <option value="4年">4年</option>
+              <option value="5年">5年</option>
+              <option value="6年">6年</option>
+            </select>
+          </div>
+          <div style={{ flex: 1 }}>
+            <label style={{ display: 'block', marginBottom: 6 }}>クラス</label>
+            <select 
+              value={classValue} 
+              onChange={e => setClassValue(e.target.value)} 
+              required 
+              style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }}
+            >
+              <option value="">選択してください</option>
+              <option value="1組">1組</option>
+              <option value="2組">2組</option>
+              <option value="3組">3組</option>
+              <option value="4組">4組</option>
+              <option value="5組">5組</option>
+            </select>
+          </div>
         </div>
         <div style={{ marginBottom: 20 }}>
           <label style={{ display: 'block', marginBottom: 6 }}>メールアドレス</label>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
+          <input 
+            type="email" 
+            value={email} 
+            onChange={e => setEmail(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} 
+          />
         </div>
         <div style={{ marginBottom: 24 }}>
           <label style={{ display: 'block', marginBottom: 6 }}>パスワード</label>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} />
+          <input 
+            type="password" 
+            value={password} 
+            onChange={e => setPassword(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #bbb', fontSize: 16 }} 
+          />
         </div>
         <button 
           type="submit" 

@@ -1,9 +1,10 @@
 "use client";
 import DesktopFrame from "../../../components/frame/DesktopFrame";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getAllUsers } from "../../../lib/firebase/firestore";
 
 interface User {
-  id: number;
+  id: number | string;
   name: string;
   grade: string;
   class: string;
@@ -12,21 +13,56 @@ interface User {
 }
 
 export default function MakerUser() {
-  // TODO: 将来的にFirebase Firestoreから取得予定
-  // const { users, loading, error } = useFirebaseUsers();
-  // サンプルデータ（実際の運用では Firebase Firestore から取得）
-  const [users, setUsers] = useState<User[]>([
-    { id: 1, name: "田中 太郎", grade: "1年", class: "A組", email: "tanaka.taro@school.edu.jp", remarks: "学級委員" },
-    { id: 2, name: "佐藤 花子", grade: "1年", class: "A組", email: "sato.hanako@school.edu.jp", remarks: "図書委員" },
-    { id: 3, name: "山田 次郎", grade: "1年", class: "B組", email: "yamada.jiro@school.edu.jp", remarks: "体育委員" },
-    { id: 4, name: "鈴木 美咲", grade: "2年", class: "A組", email: "suzuki.misaki@school.edu.jp", remarks: "生徒会役員" },
-    { id: 5, name: "高橋 健太", grade: "2年", class: "B組", email: "takahashi.kenta@school.edu.jp", remarks: "文化祭実行委員" },
-    { id: 6, name: "中村 愛美", grade: "2年", class: "C組", email: "nakamura.manami@school.edu.jp", remarks: "放送委員" },
-    { id: 7, name: "小林 大輔", grade: "3年", class: "A組", email: "kobayashi.daisuke@school.edu.jp", remarks: "部活動部長" },
-    { id: 8, name: "加藤 優子", grade: "3年", class: "B組", email: "kato.yuko@school.edu.jp", remarks: "卒業委員" },
-    { id: 9, name: "渡辺 雄一", grade: "3年", class: "C組", email: "watanabe.yuichi@school.edu.jp", remarks: "進路委員" },
-    { id: 10, name: "松本 理恵", grade: "1年", class: "C組", email: "matsumoto.rie@school.edu.jp", remarks: "環境委員" }
-  ]);
+  // Firestoreからユーザーデータを取得
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Firestoreからデータを取得
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        console.log('Firestoreからデータを取得中...');
+        setLoading(true);
+        
+        const firebaseUsers = await getAllUsers();
+        console.log('取得したFirebaseデータ:', firebaseUsers);
+        console.log('データ件数:', firebaseUsers.length);
+        
+        if (firebaseUsers.length === 0) {
+          console.log('Firestoreにデータが存在しません。サンプルデータを使用します。');
+          // サンプルデータを設定
+          setUsers([
+            { id: 1, name: "田中 太郎", grade: "1年", class: "A組", email: "tanaka.taro@school.edu.jp", remarks: "学級委員" },
+            { id: 2, name: "佐藤 花子", grade: "1年", class: "A組", email: "sato.hanako@school.edu.jp", remarks: "図書委員" },
+          ]);
+        } else {
+          // Firestoreデータを既存の形式に変換
+          const convertedUsers = firebaseUsers.map(user => ({
+            id: user.id || '',
+            name: user.nickname || '',
+            grade: user.years || '',
+            class: user.class || '',
+            email: user.email || '',
+            remarks: ''
+          }));
+          
+          console.log('変換後のデータ:', convertedUsers);
+          setUsers(convertedUsers);
+        }
+      } catch (error) {
+        console.error('データ取得エラー:', error);
+        // エラーの場合はサンプルデータを使用
+        setUsers([
+          { id: 1, name: "田中 太郎", grade: "1年", class: "A組", email: "tanaka.taro@school.edu.jp", remarks: "学級委員" },
+          { id: 2, name: "佐藤 花子", grade: "1年", class: "A組", email: "sato.hanako@school.edu.jp", remarks: "図書委員" },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   // 編集モーダル用のstate
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -96,6 +132,31 @@ export default function MakerUser() {
         }}>
           グループユーザー情報
         </h1>
+
+        {/* デバッグ情報 */}
+        <div style={{
+          background: "#fff3cd",
+          border: "1px solid #ffeaa7",
+          borderRadius: "8px",
+          padding: "15px",
+          marginBottom: "20px",
+          fontSize: "14px"
+        }}>
+          <h3>デバッグ情報</h3>
+          <p>ローディング状態: {loading ? "読み込み中" : "完了"}</p>
+          <p>全ユーザー数: {users.length}</p>
+          <p>フィルタ後ユーザー数: {filteredUsers.length}</p>
+          <p>選択中の学年: {selectedGrade}</p>
+          <p>選択中のクラス: {selectedClass}</p>
+          {users.length > 0 && (
+            <details>
+              <summary>ユーザーデータ詳細</summary>
+              <pre style={{ fontSize: "12px", maxHeight: "200px", overflow: "auto" }}>
+                {JSON.stringify(users, null, 2)}
+              </pre>
+            </details>
+          )}
+        </div>
 
         {/* フィルタリングセクション */}
         <div style={{
