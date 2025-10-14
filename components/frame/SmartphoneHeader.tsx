@@ -63,7 +63,7 @@ const SmartphoneHeader: React.FC = () => {
   return (
     <div className={styles.container} style={{width: "100%", margin: 0, padding: 0}}>
       <header className={styles.header} style={{background: "#3b4a5a"}}>
-        <span className={styles.title}>No Look for School</span>
+        <span className={styles.title}>No Look </span>
         <button
           className={styles.userButton}
           aria-label="ユーザー情報"

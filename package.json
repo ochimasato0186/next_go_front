@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "backend": "python lib/start_backend.py",
+    "dev:full": "concurrently \"npm run backend\" \"npm run dev\"",
+    "setup:backend": "cd lib/No_look && copy .env.example .env"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.8",
@@ -30,6 +33,7 @@
     "@types/node": "^20",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "concurrently": "^9.0.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -1,31 +1,38 @@
 // components/Scene.tsx
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef, useMemo, useEffect, useState } from "react";
+import { useRef, useMemo, useEffect, useState, Suspense } from "react";
 import { useGLTF, OrbitControls } from "@react-three/drei";
-import { Group, Box3, Vector3 } from "three";
+import { Group, Box3, Vector3, Object3D } from "three";
 
-function SwimmingClione() {
+// GLTFローダーを分離したコンポーネント
+function GLTFModel() {
   const group = useRef<Group>(null);
-  const { scene } = useGLTF("/models/character.glb?v=6");
-
   const [scale, setScale] = useState(1);
-
-  const clonedScene = useMemo(() => scene.clone(true), [scene]);
-
+  
+  const { scene } = useGLTF("/models/character.glb?v=8");
+  
   // ✅ 読み込んだモデルの大きさを測ってスケーリング
   useEffect(() => {
-    const bbox = new Box3().setFromObject(clonedScene);
-    const size = new Vector3();
-    bbox.getSize(size);
+    if (!scene) return;
+    
+    try {
+      const bbox = new Box3().setFromObject(scene);
+      const size = new Vector3();
+      bbox.getSize(size);
 
-    console.log("Original size:", size);
+      console.log("Original size:", size);
 
-    // 目標サイズ（例えば高さを 3 にする）
-    const targetHeight = 3;
-    const currentHeight = size.y;
-    const s = (targetHeight / currentHeight) * 1.5; // ← さらに1.5倍
-    setScale(s);
-  }, [clonedScene]);
+      // 目標サイズ（例えば高さを 3 にする）
+      const targetHeight = 3;
+      const currentHeight = size.y;
+      if (currentHeight > 0) {
+        const s = (targetHeight / currentHeight) * 1.5;
+        setScale(s);
+      }
+    } catch (err) {
+      console.error("Scaling error:", err);
+    }
+  }, [scene]);
 
   // アニメーション（上下のみ）
   useFrame(({ clock }) => {
@@ -35,9 +42,70 @@ function SwimmingClione() {
     }
   });
 
+  if (!scene) {
+    return null;
+  }
+
+  console.log("Displaying actual 3D model");
   return (
     <group ref={group} scale={[scale, scale, scale]} position={[0, -1.5, 0]}>
-      <primitive object={clonedScene} />
+      <primitive object={scene.clone(true)} />
+    </group>
+  );
+}
+
+// エラーフォールバック表示
+function ErrorFallback() {
+  const group = useRef<Group>(null);
+  
+  useFrame(({ clock }) => {
+    if (group.current) {
+      const time = clock.getElapsedTime();
+      group.current.position.y = -1.5 + Math.sin(time * 2) * 0.5;
+    }
+  });
+
+  console.log("Displaying error fallback");
+  return (
+    <group ref={group}>
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="orange" />
+      </mesh>
+      <mesh position={[0, 1.5, 0]}>
+        <sphereGeometry args={[0.3]} />
+        <meshStandardMaterial color="red" />
+      </mesh>
+    </group>
+  );
+}
+
+function SwimmingClione() {
+  return (
+    <Suspense fallback={<LoadingCube />}>
+      <GLTFModel />
+    </Suspense>
+  );
+}
+
+// ローディング中の表示コンポーネント
+function LoadingCube() {
+  const group = useRef<Group>(null);
+  
+  useFrame(({ clock }) => {
+    if (group.current) {
+      const time = clock.getElapsedTime();
+      group.current.rotation.y = time;
+      group.current.position.y = Math.sin(time * 2) * 0.3;
+    }
+  });
+
+  return (
+    <group ref={group}>
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[0.8, 0.8, 0.8]} />
+        <meshStandardMaterial color="skyblue" />
+      </mesh>
     </group>
   );
 }
@@ -48,10 +116,17 @@ export default function Scene() {
       style={{ width: "100%", height: "100%", background: "transparent" }}
       camera={{ position: [0, 0, 1.2], fov: 60 }}
       gl={{ alpha: true, antialias: true }}
+      onError={(error) => {
+        console.error("Canvas error:", error);
+      }}
     >
       <ambientLight intensity={1.5} />
       <directionalLight position={[10, 10, 5]} intensity={1.0} />
-      <SwimmingClione />
+      
+      <Suspense fallback={<LoadingCube />}>
+        <SwimmingClione />
+      </Suspense>
+      
       <OrbitControls enablePan={false} enableZoom={true} autoRotate={false} />
     </Canvas>
   );
